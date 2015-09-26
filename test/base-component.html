@@ -1,0 +1,25 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<script>
+
+  Polymer({
+
+    is: 'base-component',
+
+    properties: {
+
+      hello: {
+        type: String,
+        value: 'Hello'
+      }
+
+    },
+
+    sayHello: function() {
+
+      return this.hello;
+    }
+
+  });
+
+</script>

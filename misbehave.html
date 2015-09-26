@@ -1,0 +1,61 @@
+<link rel="import" href="misbehave-empty.html">
+
+<script>
+
+  Polymer.Base._addFeature({
+
+    toBehavior: function() {
+
+      // An empty component
+      var baseComponent = document.createElement('misbehave-empty');
+
+      var basePrototype = Object.getPrototypeOf(baseComponent);
+      var thisPrototype = Object.getPrototypeOf(this);
+
+      var baseProtoKeys = Object.keys(basePrototype);
+
+      // Filter out junk we don't want in our behavior definition
+      var definitionProtoKeys = Object.keys(thisPrototype).filter(function(prop) {
+
+        // Throw away anything you'd find in every Polymer component
+        var inBase = ~baseProtoKeys.indexOf(prop);
+
+        // Throw away readOnly setters, which should be re-generated organically
+        var readOnlySetter = false;
+
+        var readOnlyMatch = prop.match(/^_set(.*)$/);
+
+        if (readOnlyMatch) {
+
+          // _setMyProperty -> MyProperty -> myProperty
+          var readOnlyProp = readOnlyMatch[1];
+          readOnlyProp = str.substr(0, 1).toLowerCase() + str.substr(1);
+
+          if (this.properties &&
+              this.properties[readOnlyProp] &&
+              this.properties[readOnlyProp].readOnly) {
+
+                readOnlySetter = true;
+          }
+
+        }
+
+        return !inBase && !readOnlySetter;
+      });
+
+      // Build the behavior definition from the culled prototype keys
+      var behaviorDefinition = {};
+
+      var key;
+      for (var i = 0; i < definitionProtoKeys.length; ++i) {
+
+        key = definitionProtoKeys[i];
+        behaviorDefinition[key] = thisPrototype[key];
+      }
+
+      return behaviorDefinition;
+    }
+
+  });
+
+</script>
