@@ -8,8 +8,8 @@ Turn Polymer v1 components into behaviors
 Misbehave adds a method `element.toBehavior()` to all Polymer components which exports a behavior definition that can be used to effectively extend a component.  The misbehave library should be included as an HTML import after Polymer.
 
 ```html
-<link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../misbehave.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../misbehave/misbehave.html">
 <link rel="import" href="base-component.html">
 
 <script>
