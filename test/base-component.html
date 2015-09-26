@@ -17,13 +17,45 @@
         type: String,
         value: 'Protected',
         readOnly: true
+      },
+
+      sawEvent: {
+        type: Boolean,
+        value: false
+      },
+
+      observeMe: {
+        type: Object,
+        value: function() {
+          return {};
+        }
       }
 
+    },
+
+    observers: [
+      '_baseObserve(observeMe)'
+    ],
+
+    listeners: {
+      'base-custom-event': '_seeEvent'
     },
 
     sayHello: function() {
 
       return this.hello;
+    },
+
+    _seeEvent: function() {
+
+      this.sawEvent = true;
+    },
+
+    _baseObserve: function(observeMe) {
+      
+      if (observeMe.hasOwnProperty('hasBeenObserved')) {
+        observeMe.hasBeenObserved = true;
+      }
     }
 
   });

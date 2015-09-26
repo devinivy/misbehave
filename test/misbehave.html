@@ -50,7 +50,29 @@
           done();
         });
 
-        test('allows readOnly setters to be organically created.', function(done) {
+        test('preserves observers.', function(done) {
+
+          expect(ext.observeMe).to.deep.equal({});
+
+          var origObserveMe = ext.observeMe = {
+            hasBeenObserved: false
+          };
+
+          expect(ext.observeMe).to.equal(origObserveMe);
+          expect(ext.observeMe.hasBeenObserved).to.equal(true);
+          
+          done();
+        });
+
+        test('preserves listeners.', function(done) {
+
+          expect(ext.sawEvent).to.equal(false);
+          ext.fire('base-custom-event');
+          expect(ext.sawEvent).to.equal(true);
+          done();
+        });
+
+        test('preserves readOnly setters, allows them to be organically created.', function(done) {
 
           expect(typeof baseBehavior._setReadMeOnly).to.equal('undefined');
           expect(typeof ext._setReadMeOnly).to.equal('function');
