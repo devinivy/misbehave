@@ -29,7 +29,7 @@
 
           // _setMyProperty -> MyProperty -> myProperty
           var readOnlyProp = readOnlyMatch[1];
-          readOnlyProp = str.substr(0, 1).toLowerCase() + str.substr(1);
+          readOnlyProp = readOnlyProp.substr(0, 1).toLowerCase() + readOnlyProp.substr(1);
 
           if (this.properties &&
               this.properties[readOnlyProp] &&
