@@ -39,6 +39,22 @@
           expect(ext.sayHello()).to.equal('Hello');
           done();
         });
+        
+        test('keeps private vars intact', function(done) {
+
+          expect(ext._privateVar.isPrivate).to.equal(true);
+          done();
+        });
+        
+        test("doesn't break with multiple instances of same element", function(done) {
+          var beginningCount = ext._theCount;
+          window.addEventListener('custom-event', function() {
+            setTimeout(function() {
+              expect(ext.numEventListeners).to.equal(1);
+              done();
+            }, 500)
+          })
+        });
 
       });
 

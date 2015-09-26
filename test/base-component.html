@@ -11,13 +11,48 @@
       hello: {
         type: String,
         value: 'Hello'
+      },
+      
+      _privateVar: {
+        type: Object,
+        value: {isPrivate: true}
+      },
+      
+      _theCount: {
+        type: Number,
+        value: Math.random()
+      },
+      
+      numEventListeners: {
+        type: Number,
+        value: 0
       }
 
+    },
+
+    ready: function() {
+      console.log(this._theCount);
+      var self = this;
+      window.addEventListener('custom-event', function() {
+        self._increaseEventListenerCount();
+      });
+      
+      this.async(function() {
+        self.fire('custom-event');
+      }, 3000);
     },
 
     sayHello: function() {
 
       return this.hello;
+    },
+
+    count: function() {
+      return ++this._theCount;
+    },
+
+    _increaseEventListenerCount: function() {
+      this.numEventListeners++;
     }
 
   });
