@@ -13,12 +13,20 @@
     <script src="../../test-fixture/test-fixture-mocha.js"></script>
 
     <link rel="import" href="../../test-fixture/test-fixture.html">
+    <link rel="import" href="base-component.html">
     <link rel="import" href="ext-component.html">
 
   </head>
   <body>
 
-    <test-fixture id="simple">
+    <test-fixture id="base">
+      <template>
+        <base-component></base-component>
+      </template>
+    </test-fixture>
+
+
+    <test-fixture id="ext">
       <template>
         <ext-component></ext-component>
       </template>
@@ -27,16 +35,30 @@
     <script>
       suite('misbehave', function() {
 
+        var base;
         var ext;
 
         setup(function() {
 
-          ext = fixture('simple');
+          baseBehavior = fixture('base').toBehavior();
+          ext = fixture('ext');
         });
 
         test('preserves simple properties and methods.', function(done) {
 
           expect(ext.sayHello()).to.equal('Hello');
+          done();
+        });
+
+        test('allows readOnly setters to be organically created.', function(done) {
+
+          expect(typeof baseBehavior._setReadMeOnly).to.equal('undefined');
+          expect(typeof ext._setReadMeOnly).to.equal('function');
+
+          expect(ext.readMeOnly).to.equal('Protected');
+          ext._setReadMeOnly('Protected Set');
+          expect(ext.readMeOnly).to.equal('Protected Set');
+
           done();
         });
 

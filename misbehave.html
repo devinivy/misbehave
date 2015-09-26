@@ -6,6 +6,8 @@
 
     toBehavior: function() {
 
+      var self = this;
+
       // An empty component
       var baseComponent = document.createElement('misbehave-empty');
 
@@ -31,9 +33,9 @@
           var readOnlyProp = readOnlyMatch[1];
           readOnlyProp = readOnlyProp.substr(0, 1).toLowerCase() + readOnlyProp.substr(1);
 
-          if (this.properties &&
-              this.properties[readOnlyProp] &&
-              this.properties[readOnlyProp].readOnly) {
+          if (self.properties &&
+              self.properties[readOnlyProp] &&
+              self.properties[readOnlyProp].readOnly) {
 
                 readOnlySetter = true;
           }
