@@ -37,20 +37,45 @@
 
         var baseBehavior;
         var ext;
+        var baseDefinition;
 
         setup(function() {
 
           baseBehavior = fixture('base').toBehavior();
+          baseDefinition = baseBehavior.getBaseDefinition();
           ext = fixture('ext');
+        });
+
+        test('does not create behaviors with anything extraneous.', function(done) {
+
+          expect(baseBehavior).to.have.keys([
+            "properties",
+            "observers",
+            "listeners",
+            "ready",
+            "attached",
+            "sayHello",
+            "_seeEvent",
+            "_baseObserve",
+            "getBaseDefinition"
+          ]);
+
+          done();
         });
 
         test('preserves simple properties and methods.', function(done) {
 
+          expect(baseBehavior.properties).to.deep.equal(baseDefinition.properties);
+
+          expect(ext.hello).to.equal('Hello');
+          expect(typeof ext.sayHello).to.equal('function');
           expect(ext.sayHello()).to.equal('Hello');
           done();
         });
 
         test('preserves observers.', function(done) {
+
+          expect(baseBehavior.observers).to.deep.equal(baseDefinition.observers);
 
           expect(ext.observeMe).to.deep.equal({});
 
@@ -60,15 +85,24 @@
 
           expect(ext.observeMe).to.equal(origObserveMe);
           expect(ext.observeMe.hasBeenObserved).to.equal(true);
-          
+
           done();
         });
 
         test('preserves listeners.', function(done) {
 
+          expect(baseBehavior.listeners).to.deep.equal(baseDefinition.listeners);
+
           expect(ext.sawEvent).to.equal(false);
           ext.fire('base-custom-event');
           expect(ext.sawEvent).to.equal(true);
+          done();
+        });
+
+        test('preserves lifecycle callbacks.', function(done) {
+
+          expect(ext.readyCount).to.equal(1);
+          expect(ext.attachedCount).to.equal(1);
           done();
         });
 

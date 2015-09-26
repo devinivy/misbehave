@@ -1,8 +1,9 @@
 <link rel="import" href="../../polymer/polymer.html">
 
 <script>
+(function() {
 
-  Polymer({
+  var BaseDefinition = {
 
     is: 'base-component',
 
@@ -29,6 +30,16 @@
         value: function() {
           return {};
         }
+      },
+
+      readyCount: {
+        type: Number,
+        value: 0
+      },
+
+      attachedCount: {
+        type: Number,
+        value: 0
       }
 
     },
@@ -39,6 +50,16 @@
 
     listeners: {
       'base-custom-event': '_seeEvent'
+    },
+
+    ready: function() {
+
+      this.readyCount++;
+    },
+
+    attached: function() {
+
+      this.attachedCount++;
     },
 
     sayHello: function() {
@@ -52,12 +73,20 @@
     },
 
     _baseObserve: function(observeMe) {
-      
+
       if (observeMe.hasOwnProperty('hasBeenObserved')) {
         observeMe.hasBeenObserved = true;
       }
+    },
+
+    getBaseDefinition: function() {
+
+      return BaseDefinition;
     }
 
-  });
+  };
 
+  Polymer(BaseDefinition);
+
+})();
 </script>
