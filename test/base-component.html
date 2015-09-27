@@ -11,8 +11,9 @@
 </template>
 
 <script>
+(function() {
 
-  Polymer({
+  var BaseDefinition = {
 
     is: 'base-component',
 
@@ -21,15 +22,55 @@
       hello: {
         type: String,
         value: 'Hello'
+      },
+
+      readMeOnly: {
+        type: String,
+        value: 'Protected',
+        readOnly: true
+      },
+
+      sawEvent: {
+        type: Boolean,
+        value: false
+      },
+
+      observeMe: {
+        type: Object,
+        value: function() {
+          return {};
+        }
+      },
+
+      readyCount: {
+        type: Number,
+        value: 0
+      },
+
+      attachedCount: {
+        type: Number,
+        value: 0
       }
 
     },
 
+    observers: [
+      '_baseObserve(observeMe)'
+    ],
+
+    listeners: {
+      'base-custom-event': '_seeEvent'
+    },
+
     ready: function() {
-      
+
+      this.readyCount++;
     },
 
     attached: function() {
+
+      this.attachedCount++;
+      
       console.log("following logs from base-component");
       var greetingElement = Polymer.dom(this.root).querySelector("#greeting");
       console.log("this.$.greeting");
@@ -43,13 +84,29 @@
       return this.hello;
     },
 
-    handleResponse: function(e) {
-      console.log("response!");
-      console.log(e.detail.xhr.response);
+    _seeEvent: function() {
+
+      this.sawEvent = true;
+    },
+
+    _baseObserve: function(observeMe) {
+
+      if (observeMe.hasOwnProperty('hasBeenObserved')) {
+        observeMe.hasBeenObserved = true;
+      }
+    },
+
+    getBaseDefinition: function() {
+
+      return BaseDefinition;
+      
     }
 
-  });
+  };
 
+  Polymer(BaseDefinition);
+
+})();
 </script>
 
 </dom-module>

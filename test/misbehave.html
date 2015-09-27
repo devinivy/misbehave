@@ -13,13 +13,21 @@
     <script src="../../test-fixture/test-fixture-mocha.js"></script>
 
     <link rel="import" href="../../test-fixture/test-fixture.html">
+    <link rel="import" href="base-component.html">
     <link rel="import" href="ext-component.html">
     <link rel="import" href="another-component.html">
 
   </head>
   <body>
-  
-    <test-fixture id="simple">
+
+    <test-fixture id="base">
+      <template>
+        <base-component></base-component>
+      </template>
+    </test-fixture>
+
+
+    <test-fixture id="ext">
       <template>
         <ext-component></ext-component>
       </template>
@@ -28,15 +36,40 @@
     <script>
       suite('misbehave', function() {
 
+        var baseBehavior;
         var ext;
+        var baseDefinition;
 
         setup(function() {
 
-          ext = fixture('simple');
+          baseBehavior = fixture('base').toBehavior();
+          baseDefinition = baseBehavior.getBaseDefinition();
+          ext = fixture('ext');
+        });
+
+        test('does not create behaviors with anything extraneous.', function(done) {
+
+          expect(baseBehavior).to.have.keys([
+            "properties",
+            "observers",
+            "listeners",
+            "ready",
+            "attached",
+            "sayHello",
+            "_seeEvent",
+            "_baseObserve",
+            "getBaseDefinition"
+          ]);
+
+          done();
         });
 
         test('preserves simple properties and methods.', function(done) {
 
+          expect(baseBehavior.properties).to.deep.equal(baseDefinition.properties);
+
+          expect(ext.hello).to.equal('Hello');
+          expect(typeof ext.sayHello).to.equal('function');
           expect(ext.sayHello()).to.equal('Hello');
           expect(ext.anotherPropIsHere).to.equal(true);
           done();
@@ -49,6 +82,51 @@
           // This message is inside another-component
           expect(Polymer.dom(ext.$.injectAnotherTarget).querySelector('p').innerHTML).to.equal("I'm a p tag =P");
           
+          done();
+        });
+
+        test('preserves observers.', function(done) {
+
+          expect(baseBehavior.observers).to.deep.equal(baseDefinition.observers);
+
+          expect(ext.observeMe).to.deep.equal({});
+
+          var origObserveMe = ext.observeMe = {
+            hasBeenObserved: false
+          };
+
+          expect(ext.observeMe).to.equal(origObserveMe);
+          expect(ext.observeMe.hasBeenObserved).to.equal(true);
+
+          done();
+        });
+
+        test('preserves listeners.', function(done) {
+
+          expect(baseBehavior.listeners).to.deep.equal(baseDefinition.listeners);
+
+          expect(ext.sawEvent).to.equal(false);
+          ext.fire('base-custom-event');
+          expect(ext.sawEvent).to.equal(true);
+          done();
+        });
+
+        test('preserves lifecycle callbacks.', function(done) {
+
+          expect(ext.readyCount).to.equal(1);
+          expect(ext.attachedCount).to.equal(1);
+          done();
+        });
+
+        test('preserves readOnly setters, allows them to be organically created.', function(done) {
+
+          expect(typeof baseBehavior._setReadMeOnly).to.equal('undefined');
+          expect(typeof ext._setReadMeOnly).to.equal('function');
+
+          expect(ext.readMeOnly).to.equal('Protected');
+          ext._setReadMeOnly('Protected Set');
+          expect(ext.readMeOnly).to.equal('Protected Set');
+
           done();
         });
 
