@@ -49,6 +49,8 @@
         test('does not create behaviors with anything extraneous.', function(done) {
 
           expect(baseBehavior).to.have.keys([
+            "behaviors",
+            "hasBasicBehavior",
             "properties",
             "observers",
             "listeners",
@@ -114,6 +116,15 @@
           expect(ext.readMeOnly).to.equal('Protected');
           ext._setReadMeOnly('Protected Set');
           expect(ext.readMeOnly).to.equal('Protected Set');
+
+          done();
+        });
+
+        test('preserves behaviors.', function(done) {
+
+          expect(baseBehavior.behaviors).to.deep.equal(baseDefinition.behaviors);
+          
+          expect(ext.hasBasicBehavior).to.equal(true);
 
           done();
         });

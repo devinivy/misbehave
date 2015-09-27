@@ -3,9 +3,19 @@
 <script>
 (function() {
 
+  var BasicBehavior = {
+
+    hasBasicBehavior: true
+
+  };
+
   var BaseDefinition = {
 
     is: 'base-component',
+
+    behaviors: [
+      BasicBehavior
+    ],
 
     properties: {
 
