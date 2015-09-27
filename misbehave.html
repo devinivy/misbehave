@@ -53,6 +53,17 @@
         behaviorDefinition[key] = thisPrototype[key];
       }
 
+      behaviorDefinition.injectFrom = function(base, target) {
+        var baseElement = document.createElement(base);
+        // Grab an instance of the base template!
+        var baseTemplateInstance = Polymer.Base.instanceTemplate(Polymer.dom(baseElement).node._template);
+        
+        // Remove what might have been in the target
+        Polymer.dom(target).innerHTML = "";
+        // _template is only available if the element hasn't been added to the DOM somewhere!
+        Polymer.dom(target).appendChild(baseTemplateInstance);
+      }
+
       return behaviorDefinition;
     }
 

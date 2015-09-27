@@ -14,10 +14,11 @@
 
     <link rel="import" href="../../test-fixture/test-fixture.html">
     <link rel="import" href="ext-component.html">
+    <link rel="import" href="another-component.html">
 
   </head>
   <body>
-
+  
     <test-fixture id="simple">
       <template>
         <ext-component></ext-component>
@@ -37,6 +38,17 @@
         test('preserves simple properties and methods.', function(done) {
 
           expect(ext.sayHello()).to.equal('Hello');
+          expect(ext.anotherPropIsHere).to.equal(true);
+          done();
+        });
+        
+        test('inherits template where specified', function(done) {
+          // This message is inside base-component
+          expect(Polymer.dom(ext.$.injectBaseTarget).querySelector('#greeting').innerHTML).to.equal("Greetings! I've replaced what was there before =D");
+          
+          // This message is inside another-component
+          expect(Polymer.dom(ext.$.injectAnotherTarget).querySelector('p').innerHTML).to.equal("I'm a p tag =P");
+          
           done();
         });
 

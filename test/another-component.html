@@ -1,0 +1,34 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../misbehave.html">
+<link rel="import" href="base-component.html">
+<!-- <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"> -->
+<dom-module id="another-component">
+
+<template>
+  <p id="aPTag">I'm a p tag =P</p>
+</template>
+
+<script>
+
+  Polymer({
+
+    is: 'another-component',
+    
+    properties: {
+      anotherPropIsHere: {
+        type: Boolean,
+        value: true
+      }
+    },
+    
+    ready: function() {
+      console.log("following from another-component")
+      console.log('this.$.aPTag');
+      console.log(this.$.aPTag);
+    }
+    
+  });
+
+</script>
+
+</dom-module>
