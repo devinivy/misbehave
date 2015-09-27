@@ -88,6 +88,7 @@
         
         test('preserves functionality of this.$.* in base elements', function(done) {
           
+          // Very strange because this console.logs correctly in another-component
           expect(ext.this$APTag).to.not.equal(undefined);
           
           expect(ext.this$Greeting).to.not.equal(undefined);
