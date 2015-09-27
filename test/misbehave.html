@@ -48,7 +48,7 @@
         });
 
         test('does not create behaviors with anything extraneous.', function(done) {
-
+          
           expect(baseBehavior).to.have.keys([
             "properties",
             "observers",
@@ -58,7 +58,8 @@
             "sayHello",
             "_seeEvent",
             "_baseObserve",
-            "getBaseDefinition"
+            "getBaseDefinition",
+            "injectFrom"
           ]);
 
           done();
