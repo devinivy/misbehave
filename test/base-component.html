@@ -5,7 +5,14 @@
 
   var BasicBehavior = {
 
-    hasBasicBehavior: true
+    properties: {
+
+      hasBasicBehavior: {
+        type: Boolean,
+        value: true
+      }
+
+    }
 
   };
 
@@ -63,6 +70,9 @@
     },
 
     ready: function() {
+
+      // Just to ensure this doesn't appear in the behavior definition
+      this.couldBeExtraneous = true;
 
       this.readyCount++;
     },

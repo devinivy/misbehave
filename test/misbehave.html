@@ -35,22 +35,38 @@
     <script>
       suite('misbehave', function() {
 
+        var base;
         var baseBehavior;
-        var ext;
+        var baseRawBehavior;
         var baseDefinition;
+        var ext;
 
         setup(function() {
 
-          baseBehavior = fixture('base').toBehavior();
-          baseDefinition = baseBehavior.getBaseDefinition();
+          base = fixture('base')
+          baseBehavior = base.toBehavior();
+          baseRawBehavior = Array.isArray(baseBehavior) ? baseBehavior[baseBehavior.length - 1] : baseBehavior;
+          baseDefinition = baseRawBehavior.getBaseDefinition();
           ext = fixture('ext');
+        });
+
+        test('preserves sub-behaviors.', function(done) {
+
+          // Our behavior definition is a list of behaviors
+          expect(baseBehavior).to.be.an('array');
+          expect(baseBehavior).to.have.length(2);
+
+          // It should consist of the base component's behaviors, plus the raw base behavior
+          expect(baseBehavior).to.deep.equal(baseDefinition.behaviors.concat([ baseRawBehavior ]));
+
+          expect(ext.hasBasicBehavior).to.equal(true);
+
+          done();
         });
 
         test('does not create behaviors with anything extraneous.', function(done) {
 
-          expect(baseBehavior).to.have.keys([
-            "behaviors",
-            "hasBasicBehavior",
+          expect(baseRawBehavior).to.have.keys([
             "properties",
             "observers",
             "listeners",
@@ -67,17 +83,18 @@
 
         test('preserves simple properties and methods.', function(done) {
 
-          expect(baseBehavior.properties).to.deep.equal(baseDefinition.properties);
+          expect(baseRawBehavior.properties).to.deep.equal(baseDefinition.properties);
 
           expect(ext.hello).to.equal('Hello');
           expect(typeof ext.sayHello).to.equal('function');
           expect(ext.sayHello()).to.equal('Hello');
+
           done();
         });
 
         test('preserves observers.', function(done) {
 
-          expect(baseBehavior.observers).to.deep.equal(baseDefinition.observers);
+          expect(baseRawBehavior.observers).to.deep.equal(baseDefinition.observers);
 
           expect(ext.observeMe).to.deep.equal({});
 
@@ -93,11 +110,12 @@
 
         test('preserves listeners.', function(done) {
 
-          expect(baseBehavior.listeners).to.deep.equal(baseDefinition.listeners);
+          expect(baseRawBehavior.listeners).to.deep.equal(baseDefinition.listeners);
 
           expect(ext.sawEvent).to.equal(false);
           ext.fire('base-custom-event');
           expect(ext.sawEvent).to.equal(true);
+
           done();
         });
 
@@ -105,26 +123,18 @@
 
           expect(ext.readyCount).to.equal(1);
           expect(ext.attachedCount).to.equal(1);
+
           done();
         });
 
         test('preserves readOnly setters, allows them to be organically created.', function(done) {
 
-          expect(typeof baseBehavior._setReadMeOnly).to.equal('undefined');
+          expect(typeof baseRawBehavior._setReadMeOnly).to.equal('undefined');
           expect(typeof ext._setReadMeOnly).to.equal('function');
 
           expect(ext.readMeOnly).to.equal('Protected');
           ext._setReadMeOnly('Protected Set');
           expect(ext.readMeOnly).to.equal('Protected Set');
-
-          done();
-        });
-
-        test('preserves behaviors.', function(done) {
-
-          expect(baseBehavior.behaviors).to.deep.equal(baseDefinition.behaviors);
-
-          expect(ext.hasBasicBehavior).to.equal(true);
 
           done();
         });
