@@ -49,10 +49,15 @@
       var behaviorDefinition = {};
 
       var key;
+      var descriptor;
       for (var i = 0; i < definitionProtoKeys.length; ++i) {
 
         key = definitionProtoKeys[i];
-        behaviorDefinition[key] = thisPrototype[key];
+        descriptor = Object.getOwnPropertyDescriptor(thisPrototype, key);
+
+        // Set properties this way to preserve getters, setters, etc.
+        // One better than `behaviorDefinition[key] = thisPrototype[key]`, but similar
+        Object.defineProperty(behaviorDefinition, key, descriptor);
       }
 
       // Process to mix in any behaviors of the base component

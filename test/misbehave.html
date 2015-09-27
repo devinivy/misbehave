@@ -73,6 +73,9 @@
             "ready",
             "attached",
             "sayHello",
+            "getter",
+            "setter",
+            "_setterSaw",
             "_seeEvent",
             "_baseObserve",
             "getBaseDefinition"
@@ -135,6 +138,18 @@
           expect(ext.readMeOnly).to.equal('Protected');
           ext._setReadMeOnly('Protected Set');
           expect(ext.readMeOnly).to.equal('Protected Set');
+
+          done();
+        });
+
+        test('preserves getter and setter functions.', function(done) {
+
+          expect(ext.getter).to.equal('Some things never change');
+
+          var change = 'And some things change all the time';
+          expect(ext._setterSaw).to.equal(null);
+          ext.setter = change;
+          expect(ext._setterSaw).to.equal(change);
 
           done();
         });

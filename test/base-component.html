@@ -61,6 +61,8 @@
 
     },
 
+    _setterSaw: null,
+
     observers: [
       '_baseObserve(observeMe)'
     ],
@@ -85,6 +87,16 @@
     sayHello: function() {
 
       return this.hello;
+    },
+
+    get getter() {
+
+      return 'Some things never change';
+    },
+
+    set setter(value) {
+
+      this._setterSaw = value;
     },
 
     _seeEvent: function() {
