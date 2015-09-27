@@ -50,6 +50,16 @@
       attachedCount: {
         type: Number,
         value: 0
+      },
+      
+      this$Greeting: {
+        type: Object,
+        value: null
+      },
+      
+      queriedGreeting: {
+        type: Object,
+        value: null
       }
 
     },
@@ -72,11 +82,12 @@
       this.attachedCount++;
       
       console.log("following logs from base-component");
-      var greetingElement = Polymer.dom(this.root).querySelector("#greeting");
+      this.queriedGreeting = Polymer.dom(this.root).querySelector("#greeting");
       console.log("this.$.greeting");
+      this.this$Greeting = this.$.greeting;
       console.log(this.$.greeting);
       console.log("Polymer.dom(this.root).querySelector('#greeting')");
-      console.log(greetingElement);
+      console.log(this.queriedGreeting);
     },
 
     sayHello: function() {

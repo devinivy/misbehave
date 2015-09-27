@@ -85,6 +85,22 @@
           
           done();
         });
+        
+        test('preserves functionality of this.$.* in base elements', function(done) {
+          
+          expect(ext.this$APTag).to.not.equal(undefined);
+          
+          expect(ext.this$Greeting).to.not.equal(undefined);
+          
+          done();
+        });
+        
+        test('replacing this.$.* in base elements with Polymer.dom(this.root).querySelector("#theId") works', function(done) {
+          
+          expect(ext.queriedGreeting).to.not.equal(undefined);
+          
+          done();
+        });
 
         test('preserves observers.', function(done) {
 

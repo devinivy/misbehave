@@ -13,20 +13,31 @@
   Polymer({
 
     is: 'another-component',
-    
+
     properties: {
       anotherPropIsHere: {
         type: Boolean,
         value: true
+      },
+
+      this$APTag: {
+        type: Object,
+        value: null
       }
     },
-    
+
     ready: function() {
       console.log("following from another-component")
       console.log('this.$.aPTag');
+      
       console.log(this.$.aPTag);
+    },
+
+    attached: function() {
+      console.warn("parent")
+      this.this$APTag = this.$.aPTag;
     }
-    
+
   });
 
 </script>
