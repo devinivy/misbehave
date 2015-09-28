@@ -26,12 +26,10 @@
     ready: function() {
       
       this.injectFrom('base-component', this.$.injectBaseTarget);
-      console.log("injectBaseTarget");
-      console.log(this.$.injectBaseTarget);
-      
       this.injectFrom('another-component', this.$.injectAnotherTarget);
-      console.log("injectAnotherTarget");
-      console.log(this.$.injectAnotherTarget);
+      
+      console.warn("this.$ log code from ext-component");
+      console.log(this.$);
     },
     
   });

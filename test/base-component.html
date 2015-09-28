@@ -13,9 +13,26 @@
 <script>
 (function() {
 
+  var BasicBehavior = {
+
+    properties: {
+
+      hasBasicBehavior: {
+        type: Boolean,
+        value: true
+      }
+
+    }
+
+  };
+
   var BaseDefinition = {
 
     is: 'base-component',
+
+    behaviors: [
+      BasicBehavior
+    ],
 
     properties: {
 
@@ -52,17 +69,9 @@
         value: 0
       },
       
-      this$Greeting: {
-        type: Object,
-        value: null
-      },
-      
-      queriedGreeting: {
-        type: Object,
-        value: null
-      }
-
     },
+
+    _setterSaw: null,
 
     observers: [
       '_baseObserve(observeMe)'
@@ -74,6 +83,9 @@
 
     ready: function() {
 
+      // Just to ensure this doesn't appear in the behavior definition
+      this.couldBeExtraneous = true;
+
       this.readyCount++;
     },
 
@@ -81,18 +93,23 @@
 
       this.attachedCount++;
       
-      console.log("following logs from base-component");
-      this.queriedGreeting = Polymer.dom(this.root).querySelector("#greeting");
-      console.log("this.$.greeting");
-      this.this$Greeting = this.$.greeting;
+      console.warn("this.$.greeting log code from base-component");
       console.log(this.$.greeting);
-      console.log("Polymer.dom(this.root).querySelector('#greeting')");
-      console.log(this.queriedGreeting);
     },
 
     sayHello: function() {
       
       return this.hello;
+    },
+
+    get getter() {
+
+      return 'Some things never change';
+    },
+
+    set setter(value) {
+
+      this._setterSaw = value;
     },
 
     _seeEvent: function() {

@@ -49,21 +49,52 @@
       var behaviorDefinition = {};
 
       var key;
+      var descriptor;
       for (var i = 0; i < definitionProtoKeys.length; ++i) {
 
         key = definitionProtoKeys[i];
-        behaviorDefinition[key] = thisPrototype[key];
+        descriptor = Object.getOwnPropertyDescriptor(thisPrototype, key);
+
+        // Set properties this way to preserve getters, setters, etc.
+        // One better than `behaviorDefinition[key] = thisPrototype[key]`, but similar
+        Object.defineProperty(behaviorDefinition, key, descriptor);
+      }
+
+      // Process to mix in any behaviors of the base component
+      if (behaviorDefinition.behaviors) {
+
+        // Make a shallow clone of the behaviors
+        var subBehaviors = behaviorDefinition.behaviors.concat([]);
+
+        // Remove "behaviors" from the behavior definition
+        delete behaviorDefinition.behaviors;
+
+        // Append the raw definition to the list of behaviors
+        subBehaviors.push(behaviorDefinition);
+
+        // This is our new behavior definition, a list of sub-behaviors
+        behaviorDefinition = subBehaviors;
       }
 
       behaviorDefinition.injectFrom = function(base, target) {
         var baseElement = document.createElement(base);
         // Grab an instance of the base template!
+        // _template is only available if the element hasn't been added to the DOM somewhere!
         var baseTemplateInstance = Polymer.Base.instanceTemplate(Polymer.dom(baseElement).node._template);
         
-        // Remove what might have been in the target
-        Polymer.dom(target).innerHTML = "";
-        // _template is only available if the element hasn't been added to the DOM somewhere!
-        Polymer.dom(target).appendChild(baseTemplateInstance);
+        // And baseTemplateInstance will only have a children array if it hasn't been added to the DOM yet!
+        var self = this;
+        Polymer.dom(baseTemplateInstance).children.forEach(function(child) {
+          if(child.id) {
+            self.$[child.id] = child;
+          }
+        });
+        
+        Polymer.dom(this.root).insertBefore(baseTemplateInstance, target);
+        Polymer.dom(this.root).removeChild(target);
+        
+        delete this.$[target.id];
+        
       }
 
       return behaviorDefinition;

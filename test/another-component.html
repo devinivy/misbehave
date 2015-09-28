@@ -1,11 +1,13 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../misbehave.html">
-<link rel="import" href="base-component.html">
-<!-- <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html"> -->
+<link rel="import" href="complicated-child.html">
+
+
 <dom-module id="another-component">
 
 <template>
   <p id="aPTag">I'm a p tag =P</p>
+  <complicated-child id="complicatedChild"></complicated-child>
 </template>
 
 <script>
@@ -19,23 +21,23 @@
         type: Boolean,
         value: true
       },
-
-      this$APTag: {
+      
+      DollarHashTest: {
         type: Object,
         value: null
       }
     },
 
     ready: function() {
-      console.log("following from another-component")
-      console.log('this.$.aPTag');
-      
+      console.warn('this.$.aPTag log code from another-component');
       console.log(this.$.aPTag);
+      if(this.$.complicatedChild) {
+        this.$.complicatedChild.popBalloon();
+      }
     },
 
     attached: function() {
-      console.warn("parent")
-      this.this$APTag = this.$.aPTag;
+      this.DollarHashTest = this.$.aPTag;
     }
 
   });
