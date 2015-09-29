@@ -89,7 +89,7 @@
           expect(baseRawBehavior.properties).to.deep.equal(baseDefinition.properties);
 
           expect(ext.hello).to.equal('Hello');
-          expect(typeof ext.sayHello).to.equal('function');
+          expect(ext.sayHello).to.be.a('function');
           expect(ext.sayHello()).to.equal('Hello');
 
           done();
@@ -132,8 +132,8 @@
 
         test('preserves readOnly setters, allows them to be organically created.', function(done) {
 
-          expect(typeof baseRawBehavior._setReadMeOnly).to.equal('undefined');
-          expect(typeof ext._setReadMeOnly).to.equal('function');
+          expect(baseRawBehavior._setReadMeOnly).to.be.undefined;
+          expect(ext._setReadMeOnly).to.be.a('function');
 
           expect(ext.readMeOnly).to.equal('Protected');
           ext._setReadMeOnly('Protected Set');
@@ -147,6 +147,7 @@
           expect(ext.getter).to.equal('Some things never change');
 
           var change = 'And some things change all the time';
+
           expect(ext._setterSaw).to.equal(null);
           ext.setter = change;
           expect(ext._setterSaw).to.equal(change);
