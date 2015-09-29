@@ -1,8 +1,11 @@
 <link rel="import" href="misbehave-empty.html">
 
 <script>
+(function() {
 
-  Polymer.Base._addFeature({
+  var Base = Polymer.Base;
+
+  Base.extend(Base, {
 
     toBehavior: function() {
 
@@ -49,15 +52,13 @@
       var behaviorDefinition = {};
 
       var key;
-      var descriptor;
       for (var i = 0; i < definitionProtoKeys.length; ++i) {
 
         key = definitionProtoKeys[i];
-        descriptor = Object.getOwnPropertyDescriptor(thisPrototype, key);
 
         // Set properties this way to preserve getters, setters, etc.
         // One better than `behaviorDefinition[key] = thisPrototype[key]`, but similar
-        Object.defineProperty(behaviorDefinition, key, descriptor);
+        Base.copyOwnProperty(key, thisPrototype, behaviorDefinition);
       }
 
       // Process to mix in any behaviors of the base component
@@ -81,4 +82,5 @@
 
   });
 
+})();
 </script>
