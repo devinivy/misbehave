@@ -1,0 +1,45 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../misbehave.html">
+
+<dom-module id="base-child">
+
+<template>
+  <div id="face">=P</div>
+</template>
+
+<script>
+
+  Polymer({
+
+    is: 'base-child',
+
+    properties: {
+      
+      balloon: {
+        type: Object,
+        value: {
+          popped: false
+        }
+      }
+      
+    },
+
+    ready: function() {
+      // Make me complicated!
+      
+    },
+
+    attached: function() {
+      
+    },
+    
+    popBalloon: function() {
+      this.balloon.popped = true;
+      Polymer.dom(this.$.face).innerHTML = "='(";
+    }
+
+  });
+
+</script>
+
+</dom-module>

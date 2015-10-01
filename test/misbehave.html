@@ -15,6 +15,7 @@
     <link rel="import" href="../../test-fixture/test-fixture.html">
     <link rel="import" href="base-component.html">
     <link rel="import" href="ext-component.html">
+    <link rel="import" href="another-component.html">
 
   </head>
   <body>
@@ -91,10 +92,30 @@
           expect(ext.hello).to.equal('Hello');
           expect(ext.sayHello).to.be.a('function');
           expect(ext.sayHello()).to.equal('Hello');
-
+          expect(ext.anotherPropIsHere).to.equal(true);
           done();
         });
-
+        
+        test('preserves functionality of this.$.* in ext-component', function(done) {
+          
+          // Very strange because this console.logs correctly in another-component
+          expect(ext.$.greeting).to.not.equal(undefined);
+          
+          // This property is set in another-component
+          expect(ext.DollarHashTest).to.not.equal(null);
+          
+          expect(ext.$.aPTag).to.not.equal(undefined);
+          
+          done();
+        });
+        
+        test('preserves properties set on children of base-elements in this.$.*', function(done) {
+          
+          expect(ext.$.baseChild.balloon.popped).to.equal(true);
+          
+          done();
+        });
+        
         test('preserves observers.', function(done) {
 
           expect(baseRawBehavior.observers).to.deep.equal(baseDefinition.observers);

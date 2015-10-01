@@ -1,6 +1,16 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../misbehave.html">
 <link rel="import" href="base-component.html">
+<link rel="import" href="another-base-component.html">
+
+<dom-module id="ext-component">
+
+<template>
+  
+  <div id='injectBaseTarget'>Replace me!</div>
+  <div id='injectAnotherBaseTarget'>Replace me with another!</div>
+  
+</template>
 
 <script>
 
@@ -9,9 +19,21 @@
     is: 'ext-component',
 
     behaviors: [
-      document.createElement('base-component').toBehavior()
-    ]
-
+      document.createElement('base-component').toBehavior(),
+      document.createElement('another-base-component').toBehavior()
+    ],
+    
+    ready: function() {
+      
+      this.injectFrom('base-component', this.$.injectBaseTarget);
+      this.injectFrom('another-base-component', this.$.injectAnotherBaseTarget);
+      
+      console.warn("this.$ log code from ext-component");
+      console.log(this.$);
+    },
+    
   });
 
 </script>
+
+</dom-module>

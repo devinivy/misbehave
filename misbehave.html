@@ -77,6 +77,27 @@
         behaviorDefinition = subBehaviors;
       }
 
+      behaviorDefinition.injectFrom = function(base, target) {
+        var baseElement = document.createElement(base);
+        // Grab an instance of the base template!
+        // _template is only available if the element hasn't been added to the DOM somewhere!
+        var baseTemplateInstance = Polymer.Base.instanceTemplate(Polymer.dom(baseElement).node._template);
+        
+        // And baseTemplateInstance will only have a children array if it hasn't been added to the DOM yet!
+        var self = this;
+        Polymer.dom(baseTemplateInstance).children.forEach(function(child) {
+          if(child.id) {
+            self.$[child.id] = child;
+          }
+        });
+        
+        Polymer.dom(this.root).insertBefore(baseTemplateInstance, target);
+        Polymer.dom(this.root).removeChild(target);
+        
+        delete this.$[target.id];
+        
+      }
+
       return behaviorDefinition;
     }
 

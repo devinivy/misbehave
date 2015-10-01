@@ -1,4 +1,14 @@
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../paper-button/paper-button.html">
+<link rel="import" href="./another-component.html">
+
+<dom-module id="base-component">
+
+<template>
+  <h1 id="greeting">Greetings! I've replaced what was there before =D</h1>
+  <paper-button>I'm a paper button! =D</paper-button>
+  
+</template>
 
 <script>
 (function() {
@@ -57,8 +67,8 @@
       attachedCount: {
         type: Number,
         value: 0
-      }
-
+      },
+      
     },
 
     _setterSaw: null,
@@ -82,10 +92,13 @@
     attached: function() {
 
       this.attachedCount++;
+      
+      console.warn("this.$.greeting log code from base-component");
+      console.log(this.$.greeting);
     },
 
     sayHello: function() {
-
+      
       return this.hello;
     },
 
@@ -114,6 +127,7 @@
     getBaseDefinition: function() {
 
       return BaseDefinition;
+      
     }
 
   };
@@ -122,3 +136,5 @@
 
 })();
 </script>
+
+</dom-module>

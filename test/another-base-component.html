@@ -1,0 +1,47 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../misbehave.html">
+<link rel="import" href="base-child.html">
+
+
+<dom-module id="another-base-component">
+
+<template>
+  <p id="aPTag">I'm a p tag =P</p>
+  <base-child id="baseChild"></base-child>
+</template>
+
+<script>
+
+  Polymer({
+
+    is: 'another-base-component',
+
+    properties: {
+      anotherPropIsHere: {
+        type: Boolean,
+        value: true
+      },
+      
+      DollarHashTest: {
+        type: Object,
+        value: null
+      }
+    },
+
+    ready: function() {
+      console.warn('this.$.aPTag log code from another-component');
+      console.log(this.$.aPTag);
+      if(this.$.baseChild) {
+        this.$.baseChild.popBalloon();
+      }
+    },
+
+    attached: function() {
+      this.DollarHashTest = this.$.aPTag;
+    }
+
+  });
+
+</script>
+
+</dom-module>
