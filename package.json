@@ -1,0 +1,26 @@
+{
+  "name": "misbehave",
+  "version": "0.0.1",
+  "description": "Turn Polymer v1 components into behaviors",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "opener http://localhost:8080/components/misbehave/test && polyserve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devinivy/misbehave.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devinivy/misbehave/issues"
+  },
+  "homepage": "https://github.com/devinivy/misbehave",
+  "devDependencies": {
+    "opener": "^1.4.1"
+  }
+}
